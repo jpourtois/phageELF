@@ -1,5 +1,4 @@
-# phageELF
-Estimator of Lytic Function for DLS data
+# phageELF: Estimator of Lytic Function for DLS data
 
 This package provides functions to analyze and plot Dynamic Light Scattering data of phage particles paired with titer data, train a model of titer loss and difference in AUC and perdict titer loss for new DLS data. It accompanies the paper "Counting Bacteriophages and Predicting Their Bioactivity Using Dynamic Light Scattering" by Dharmaraj et al.
 
