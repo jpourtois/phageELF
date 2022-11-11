@@ -12,6 +12,8 @@ This package contains 7 functions:
 - `plot_model` creates a plot of the linear model with the training data.
 - `plot_test_data` creates a plot of the linear model with both the training and test data. 
 
+You can get more information about each package after installation with the help function: `?run_all` 
+
 ## Installation
 
 Run the following code in your R console in order to install this package:
