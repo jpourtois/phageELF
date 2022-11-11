@@ -15,5 +15,5 @@ lm_test(model, AUC)
 This function allows you to predict titer loss based on a trained linear model and on a difference in AUC, which can be obtained with the function 'AUC_Diff'.
 }
 \examples{
-lm_test(AUC_data, lm_model)
+lm_test(lm_model, AUC_data)
 }

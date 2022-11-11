@@ -1,4 +1,64 @@
 
+#' Process DLS and titer training data, train model and predict titer loss for new DLS data
+#'
+#' This is a wrapper function that runs all of the analysis, replicating results from the Phage-ELF shiny app. 
+#' @param data A dataframe with DLS data. One row per sample
+#' @param lytic A dataframe with the titer associated with each treatment.
+#' @param training_pairs A dataframe with two columns, named 'treatment' and 'control'.
+#' @param metric A string specifying the DLS metric used. Must be a substring of column names in 'data', excluding the 'sample' column.
+#' @param testing_pairs Optional. A dataframe with two columns, named 'treatment' and 'control'.
+#' @export
+#' @examples
+#' run_all(dls_data, lytic_data, training_pairs, 'intens', testing_pairs)
+
+run_all <- function(data, lytic, training_pairs, metric, testing_pairs, intercept = FALSE) {
+  
+  diff_total <- tibble::tibble(treatment = character(), control = character(), AUC = numeric())
+  
+  # Calculate AUC diff for each treatment pair
+  diff_total <- tibble::tibble(treatment = character(), control = character(), AUC = numeric())
+  
+  for (i in unique(training_pairs$control)){
+    
+    treatments_in <- training_pairs$treatment[training_pairs$control == i]
+    
+    diff <- AUC_diff(data, treatments_in, i, metric)
+    
+    diff_total <- rbind(diff_total, diff)
+    
+  }
+  
+  # Train the model
+  lm_total <- lm_train(diff_total, lytic)
+  
+  training_data <- lm_total$model
+  training_data$treatment <- diff_total$treatment
+  
+  if (missing(testing_pairs)) { 
+    return(list(data = training_data, model = lm_total))
+  } else {
+    
+    # Calculate AUC diff for each test pair
+    diff_test <- tibble::tibble(treatment = character(), control = character(), AUC = numeric())
+    
+    for (i in unique(testing_pairs$control)){ # Debug from here
+      
+      treatments_in <- testing_pairs$treatment[testing_pairs$control == i]
+      
+      diff <- AUC_diff(data, treatments_in, i, metric)
+      
+      diff_test <- rbind(diff_test, diff)
+      
+    }
+    
+    pred <- lm_test(lm_total, diff_test)
+    
+    return(list(data = training_data, model = lm_total, predictions = pred))
+    
+  }
+
+}
+
 #' Calculate the difference in Area-Under-the-Curve for DLS data
 #'
 #' This function allows you to calculate the difference in AUC between treatment and control conditions. 
@@ -12,6 +72,8 @@
 
 AUC_diff <- function(data, treatments_in, control_in, metric) {
   
+  names(data)[names(data) == 'Sample.Name'] <- 'sample'
+ 
   dls <- data[,grep(metric,colnames(data), ignore.case = TRUE)]
   
   diff <- tibble::tibble(treatment = treatments_in, control = rep(control_in, length(treatments_in)), AUC = NaN)
@@ -37,7 +99,6 @@ AUC_diff <- function(data, treatments_in, control_in, metric) {
   
 }
 
-
 #' Plot DLS curves
 #'
 #' This function allows you to plot different DLS curves on the same graph for comparison.
@@ -49,7 +110,6 @@ AUC_diff <- function(data, treatments_in, control_in, metric) {
 #' @export
 #' @examples
 #' plot_DLS(dls_data, c('treatment_1', 'treatment_2'), 'control', 'intensities', size_vector)
-
 
 plot_DLS <- function(data, treatments, control, metric, size){
     
@@ -86,49 +146,66 @@ plot_DLS <- function(data, treatments, control, metric, size){
   
 }
 
-
 #' Train linear model for titer loss over difference in AUC.
 #'
 #' This function allows you to train a linear model of the titer loss associated with the difference in AUC calculated from DLS data. 
 #' @param AUC A dataframe with the difference in AUC for each treatment. 
 #' @param titer A dataframe with the titer associated with each treatment.
-#' @param control A string specifying the sample to be used as control.
 #' @param intercept If TRUE, include a non-zero intercept in the linear model. Default is FALSE.
 #' @export
 #' @examples
-#' lm_train(AUC_data, titer_data, 'control')
+#' lm_train(AUC_data, titer_data)
 
-
-lm_train <- function(AUC, titer, control, intercept = FALSE) {
+lm_train <- function(AUC, titer, intercept = FALSE) {
   
-  # Calculate titer loss
-  titer$titer_loss <- log10(titer$lytic + 1) - log10(titer$lytic[titer$treatment == control] + 1)
+  AUC$titer_loss <- NA
   
-  # Merge AUC difference and titer loss data
-  AUC_titer <- merge(AUC, titer, by = 'treatment')
+  for (n in 1:nrow(AUC)){
+    
+    control <- titer$lytic[titer$treatment == AUC$control[n]]
+    treatment <- titer$lytic[titer$treatment == AUC$treatment[n]]
+    AUC$titer_loss[n] <- log10(treatment+1) - log10(control+1)
+    
+  }
   
   # Train linear model with or without intercept
   if (intercept == FALSE) {
-    model <- lm(titer_loss ~ AUC - 1, data = AUC_titer)
+    model <- lm(titer_loss ~ AUC - 1, data = AUC)
   } else {
-    model <- lm(titer_loss ~ AUC, data = AUC_titer)
+    model <- lm(titer_loss ~ AUC, data = AUC)
   }
   
+  return(model)
+  
+}
+
+#' Plot linear model for titer loss over difference in AUC.
+#'
+#' This function allows you to plot the training data and the trained linear model of the titer loss 
+#' associated with the difference in AUC calculated from DLS data. 
+#' @param model Trained model. Output of lm_train.
+#' @param intercept If TRUE, include a non-zero intercept in the linear model. Default is FALSE.
+#' @export
+#' @examples
+#' plot_model(AUC_data, titer_data, 'control')
+
+plot_model <- function(model, intercept = FALSE) {
+
+  AUC_titer <- model$model
+  
   newdata <- data.frame(AUC = seq(0, 200,len=500))
-    
+  
   #use fitted model to predict values of vs
   newdata$pred <- predict(model, newdata, interval = 'confidence')[,'fit']
   newdata$upper <- predict(model, newdata, interval = 'confidence')[,'upr']
   newdata$lower <- predict(model, newdata, interval = 'confidence')[,'lwr']
-    
-  plot_model <- ggplot2::ggplot()  +
+  
+  ggplot2::ggplot()  +
     geom_point(data = AUC_titer, aes(x = AUC, y = titer_loss)) +
     geom_line(data = newdata, aes(x = AUC, y = pred)) +
     geom_ribbon(data = newdata, aes(x = AUC,ymin = lower, ymax = upper), alpha=0.3) +
     labs(x = 'AUC Difference', y = 'Difference in lytic activity') +
     theme_bw()
-  
-  return(list(model = model, plot = plot_model))
   
 }
 
@@ -139,9 +216,26 @@ lm_train <- function(AUC, titer, control, intercept = FALSE) {
 #' @param model A linear model. 
 #' @export
 #' @examples
-#' lm_test(AUC_data, lm_model)
+#' lm_test(lm_model, AUC_data)
 
 lm_test <- function(model, AUC) {
+  
+  predicted_titer <- data.frame(treatment = AUC$treatment, AUC = AUC$AUC, titer_loss = as.numeric(predict(model, AUC)))
+  
+  return(predicted_titer)
+  
+}
+
+#' Plot titer loss predictions
+#'
+#' This function plots titer loss predictions with the training dat and model  
+#' @param AUC A dataframe with the difference in AUC for each treatment. 
+#' @param model A linear model. 
+#' @export
+#' @examples
+#' plot_test_data(lm_model, AUC_data)
+
+plot_test_data <- function(model, AUC) {
   
   predicted_titer <- data.frame(AUC = AUC$AUC, titer_loss = as.numeric(predict(model, AUC)))
   
@@ -154,15 +248,13 @@ lm_test <- function(model, AUC) {
   newdata$upper <- predict(model, newdata, interval = 'confidence')[,'upr']
   newdata$lower <- predict(model, newdata, interval = 'confidence')[,'lwr']  
   
-  plot_all <- ggplot2::ggplot()  +
+  ggplot2::ggplot()  +
     geom_point(data = AUC_titer, aes(x = AUC, y = titer_loss)) +
     geom_line(data = newdata, aes(x = AUC, y = pred)) +
     geom_ribbon(data = newdata, aes(x = AUC,ymin = lower, ymax = upper), alpha=0.3) +
     geom_point(data = predicted_titer, aes(x = AUC, y = titer_loss), color = 'red') +
     labs(x = 'AUC Difference', y = 'Difference in lytic activity (log10)') +
     theme_bw()
-  
-  return(list(pred = predicted_titer, plot= plot_all))
   
 }
 
