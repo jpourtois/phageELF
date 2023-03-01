@@ -20,6 +20,6 @@ Run the following code in your R console in order to install this package:
 
 ``` r
 install.packages("devtools")
-devtools::install_github("jp22/phageELF")
+devtools::install_github("jpourtois/phageELF")
 ```
 If you have not used R before, you can install R [here](https://www.r-project.org/) and RStudio [here](https://www.rstudio.com/products/rstudio/). 
