@@ -16,10 +16,11 @@ You can get more information about each function with the help function: `?run_a
 
 ## Installation
 
-Run the following code in your R console in order to install this package:
+Run the following code in your R console in order to install and load this package:
 
 ``` r
 install.packages("devtools")
 devtools::install_github("jpourtois/phageELF")
+library("phageELF")
 ```
 If you have not used R before, you can install R [here](https://www.r-project.org/) and RStudio [here](https://www.rstudio.com/products/rstudio/). 
