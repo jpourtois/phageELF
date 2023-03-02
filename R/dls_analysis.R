@@ -140,11 +140,11 @@ plot_DLS <- function(data, treatments, control, metric, size){
     else { dls_long$xscale <- rep(size, nrow(dls))}
 
     # Plot one curve for each sample
-    ggplot2::ggplot(dls_long, aes(x = xscale, y = value, color = sample)) + 
-      geom_line() +
-      labs(x = 'Size', y = metric, color = 'Treatment') +
-      scale_x_continuous(trans='log10') +
-      theme_bw()
+    ggplot2::ggplot(dls_long, ggplot2::aes(x = xscale, y = value, color = sample)) + 
+      ggplot2::geom_line() +
+      ggplot2::labs(x = 'Size', y = metric, color = 'Treatment') +
+      ggplot2::scale_x_continuous(trans='log10') +
+      ggplot2::theme_bw()
   
 }
 
@@ -203,11 +203,11 @@ plot_model <- function(model, intercept = FALSE) {
   newdata$lower <- predict(model, newdata, interval = 'confidence')[,'lwr']
   
   ggplot2::ggplot()  +
-    geom_point(data = AUC_titer, aes(x = AUC, y = titer_loss)) +
-    geom_line(data = newdata, aes(x = AUC, y = pred)) +
-    geom_ribbon(data = newdata, aes(x = AUC,ymin = lower, ymax = upper), alpha=0.3) +
-    labs(x = 'AUC Difference', y = 'Difference in lytic activity') +
-    theme_bw()
+    ggplot2::geom_point(data = AUC_titer, ggplot2::aes(x = AUC, y = titer_loss)) +
+    ggplot2::geom_line(data = newdata, ggplot2::aes(x = AUC, y = pred)) +
+    ggplot2::geom_ribbon(data = newdata, ggplot2::aes(x = AUC,ymin = lower, ymax = upper), alpha=0.3) +
+    ggplot2::labs(x = 'AUC Difference', y = 'Difference in lytic activity') +
+    ggplot2::theme_bw()
   
 }
 
@@ -251,12 +251,12 @@ plot_test_data <- function(model, AUC) {
   newdata$lower <- predict(model, newdata, interval = 'confidence')[,'lwr']  
   
   ggplot2::ggplot()  +
-    geom_point(data = AUC_titer, aes(x = AUC, y = titer_loss)) +
-    geom_line(data = newdata, aes(x = AUC, y = pred)) +
-    geom_ribbon(data = newdata, aes(x = AUC,ymin = lower, ymax = upper), alpha=0.3) +
-    geom_point(data = predicted_titer, aes(x = AUC, y = titer_loss), color = 'red') +
-    labs(x = 'AUC Difference', y = 'Difference in lytic activity (log10)') +
-    theme_bw()
+    ggplot2::geom_point(data = AUC_titer, ggplot2::aes(x = AUC, y = titer_loss)) +
+    ggplot2::geom_line(data = newdata, ggplot2::aes(x = AUC, y = pred)) +
+    ggplot2::geom_ribbon(data = newdata, ggplot2::aes(x = AUC,ymin = lower, ymax = upper), alpha=0.3) +
+    ggplot2::geom_point(data = predicted_titer, ggplot2::aes(x = AUC, y = titer_loss), color = 'red') +
+    ggplot2::labs(x = 'AUC Difference', y = 'Difference in lytic activity (log10)') +
+    ggplot2::theme_bw()
   
 }
 
