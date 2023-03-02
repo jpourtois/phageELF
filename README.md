@@ -1,6 +1,6 @@
 # phageELF: Estimator of Lytic Function for DLS data
 
-This package provides functions to analyze and plot Dynamic Light Scattering data of phage particles paired with titer data, train a model of titer loss and difference in AUC and perdict titer loss for new DLS data. It accompanies the paper "Counting Bacteriophages and Predicting Their Bioactivity Using Dynamic Light Scattering" by Dharmaraj et al. and the Shiny app [Phage-ELF](https://jp22.shinyapps.io/shinyapp/).
+This package provides functions to analyze and plot Dynamic Light Scattering data of phage particles paired with titer data, train a model of titer loss and AUC differences, and predict titer loss for new DLS data. It accompanies the paper "Monitoring and Predicting Phage Bioactivity Using Dynamic Light Scattering" by Dharmaraj et al. and the Shiny app [Phage-ELF](https://jp22.shinyapps.io/shinyapp/).
 
 This package contains 7 functions:
 
@@ -16,6 +16,8 @@ You can get more information about each function with the help function: `?run_a
 
 ## Installation
 
+If you have not used R before, you can install R [here](https://www.r-project.org/) and RStudio [here](https://www.rstudio.com/products/rstudio/). 
+
 Run the following code in your R console in order to install and load this package:
 
 ``` r
@@ -23,4 +25,3 @@ install.packages("devtools")
 devtools::install_github("jpourtois/phageELF")
 library("phageELF")
 ```
-If you have not used R before, you can install R [here](https://www.r-project.org/) and RStudio [here](https://www.rstudio.com/products/rstudio/). 
