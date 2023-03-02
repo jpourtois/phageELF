@@ -112,6 +112,8 @@ AUC_diff <- function(data, treatments_in, control_in, metric) {
 #' plot_DLS(dls_data, c('treatment_1', 'treatment_2'), 'control', 'intensities', size_vector)
 
 plot_DLS <- function(data, treatments, control, metric, size){
+  
+    names(data)[names(data) == 'Sample.Name'] <- 'sample'
     
     # Remove extra columns and add back columns with sample names
     dls <- data[,grep(metric,colnames(data), ignore.case = TRUE)]
