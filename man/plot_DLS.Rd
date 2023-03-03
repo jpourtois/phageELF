@@ -4,7 +4,7 @@
 \alias{plot_DLS}
 \title{Plot DLS curves}
 \usage{
-plot_DLS(data, treatments, control, metric, size)
+plot_DLS(data, treatments, control, metric = "Intensity", size)
 }
 \arguments{
 \item{data}{A dataframe with DLS data. One row per sample}
@@ -13,7 +13,7 @@ plot_DLS(data, treatments, control, metric, size)
 
 \item{control}{A string corresponding to one sample in 'data'.}
 
-\item{metric}{A string specifying the DLS metric used. Must be a substring of column names in 'data', excluding the 'sample' column.}
+\item{metric}{A character string specifying the DLS metric to use. Default is 'Intensity'. Other metrics typically include 'Volume' and 'Number'. Column names in 'data' must contain the substrings 'intens','volume' and 'number' respectively (excluding the 'sample' column).}
 
 \item{size}{Optional. A vector of the particle sizes associated with the DLS measurements in 'data'.}
 }
@@ -21,5 +21,5 @@ plot_DLS(data, treatments, control, metric, size)
 This function allows you to plot different DLS curves on the same graph for comparison.
 }
 \examples{
-plot_DLS(dls_data, c('treatment_1', 'treatment_2'), 'control', 'intensities', size_vector)
+plot_DLS(dls_data, c('treatment_1', 'treatment_2'), 'control', 'Intensity', size_vector)
 }

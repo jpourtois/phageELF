@@ -4,7 +4,14 @@
 \alias{run_all}
 \title{Process DLS and titer training data, train model and predict titer loss for new DLS data}
 \usage{
-run_all(data, lytic, training_pairs, metric, testing_pairs, intercept = FALSE)
+run_all(
+  data,
+  lytic,
+  training_pairs,
+  testing_pairs,
+  metric = "Intensity",
+  intercept = TRUE
+)
 }
 \arguments{
 \item{data}{A dataframe with DLS data. One row per sample}
@@ -13,13 +20,15 @@ run_all(data, lytic, training_pairs, metric, testing_pairs, intercept = FALSE)
 
 \item{training_pairs}{A dataframe with two columns, named 'treatment' and 'control'.}
 
-\item{metric}{A string specifying the DLS metric used. Must be a substring of column names in 'data', excluding the 'sample' column.}
-
 \item{testing_pairs}{Optional. A dataframe with two columns, named 'treatment' and 'control'.}
+
+\item{metric}{A character string specifying the DLS metric to use. Default is 'Intensity'. Other metrics typically include 'Volume' and 'Number'. Column names in 'data' must contain the substrings 'intens','volume' and 'number' respectively (excluding the 'sample' column).}
+
+\item{intercept}{If TRUE, include a non-zero intercept in the linear model. Default is TRUE.}
 }
 \description{
 This is a wrapper function that runs all of the analysis, replicating results from the Phage-ELF shiny app.
 }
 \examples{
-run_all(dls_data, lytic_data, training_pairs, 'intens', testing_pairs)
+run_all(dls_data, lytic_data, training_pairs, testing pairs)
 }

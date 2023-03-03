@@ -4,14 +4,14 @@
 \alias{lm_train}
 \title{Train linear model for titer loss over difference in AUC.}
 \usage{
-lm_train(AUC, titer, intercept = FALSE)
+lm_train(AUC, titer, intercept = TRUE)
 }
 \arguments{
 \item{AUC}{A dataframe with the difference in AUC for each treatment.}
 
 \item{titer}{A dataframe with the titer associated with each treatment.}
 
-\item{intercept}{If TRUE, include a non-zero intercept in the linear model. Default is FALSE.}
+\item{intercept}{If TRUE, include a non-zero intercept in the linear model. Default is TRUE.}
 }
 \description{
 This function allows you to train a linear model of the titer loss associated with the difference in AUC calculated from DLS data.

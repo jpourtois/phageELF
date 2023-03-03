@@ -7,9 +7,9 @@
 lm_test(model, AUC)
 }
 \arguments{
-\item{model}{A linear model.}
+\item{model}{A trained linear model. Output of lm_train().}
 
-\item{AUC}{A dataframe with the difference in AUC for each treatment.}
+\item{AUC}{A dataframe with the difference in AUC for each treatment. Output of AUC_diff().}
 }
 \description{
 This function allows you to predict titer loss based on a trained linear model and on a difference in AUC, which can be obtained with the function 'AUC_Diff'.

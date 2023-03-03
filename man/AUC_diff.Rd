@@ -4,12 +4,12 @@
 \alias{AUC_diff}
 \title{Calculate the difference in Area-Under-the-Curve for DLS data}
 \usage{
-AUC_diff(data, treatments_in, control_in, metric)
+AUC_diff(data, treatments_in, control_in, metric = "Intensity")
 }
 \arguments{
 \item{data}{A dataframe with DLS data. One row per sample}
 
-\item{metric}{A string specifying the DLS metric used. Must be a substring of column names in 'data', excluding the 'sample' column.}
+\item{metric}{A character string specifying the DLS metric to use. Default is 'Intensity'. Other metrics typically include 'Volume' and 'Number'. Column names in 'data' must contain the substrings 'intens','volume' and 'number' respectively (excluding the 'sample' column).}
 
 \item{treatments}{A vector of strings corresponding to a subset of the samples in 'data'.}
 
@@ -19,5 +19,5 @@ AUC_diff(data, treatments_in, control_in, metric)
 This function allows you to calculate the difference in AUC between treatment and control conditions.
 }
 \examples{
-AUC_diff(dls_data, c('treatment_1', 'treatment_2'), 'control', 'intensities')
+AUC_diff(dls_data, c('treatment_1', 'treatment_2'), 'control', 'Intensity')
 }

@@ -7,9 +7,9 @@
 plot_test_data(model, AUC)
 }
 \arguments{
-\item{model}{A linear model.}
+\item{model}{A trained linear model. Output of lm_train().}
 
-\item{AUC}{A dataframe with the difference in AUC for each treatment.}
+\item{AUC}{A dataframe with the difference in AUC for each treatment. Output of AUC_diff().}
 }
 \description{
 This function plots titer loss predictions with the training dat and model

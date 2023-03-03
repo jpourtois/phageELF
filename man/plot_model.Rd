@@ -4,12 +4,10 @@
 \alias{plot_model}
 \title{Plot linear model for titer loss over difference in AUC.}
 \usage{
-plot_model(model, intercept = FALSE)
+plot_model(model)
 }
 \arguments{
-\item{model}{Trained model. Output of lm_train.}
-
-\item{intercept}{If TRUE, include a non-zero intercept in the linear model. Default is FALSE.}
+\item{model}{A trained linear model. Output of lm_train.}
 }
 \description{
 This function allows you to plot the training data and the trained linear model of the titer loss
