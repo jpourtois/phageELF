@@ -18,13 +18,12 @@ You can get more information about each function with the help function: `?run_a
 
 The `phageELF` package requires only a standard computer and should be compatible with Windows, Mac and Linux operating systems.
 
-Users should have `R` version 4.2.2 installed. The package functions with all packages in their latest version as they appear on `CRAN` on March 2023. 
+Users should have `R` version 4.2.2 installed. The package functions with all packages in their latest version as they appear on `CRAN` on March 2023: 
 
 ```
 tibble_3.0.3
 tidyr_1.1.0
 ggplot2_3.3.2
-
 ```
 
 ## Installation
