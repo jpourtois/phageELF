@@ -16,9 +16,14 @@ You can get more information about each function with the help function: `?run_a
 
 ## System Requirements
 
-The 'phageELF' package requires only a standard computer and should be compatible with Windows, Mac and Linux operating systems.
+The `phageELF` package requires only a standard computer and should be compatible with Windows, Mac and Linux operating systems.
 
-Users should have 'R' version 4.2.2 installed. 
+Users should have `R` version 4.2.2 installed. The package functions with all packages in their latest version as they appear on `CRAN` on March 2023.
+
+```
+
+
+```
 
 ## Installation
 
