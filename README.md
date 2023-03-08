@@ -12,7 +12,7 @@ This package contains 7 functions:
 - `plot_model` creates a plot of the linear model with the training data.
 - `plot_test_data` creates a plot of the linear model with both the training and test data. 
 
-You can get more information about each function with the help function: `?run_all` . This requires installing the package first. 
+You can get more information about each function with the help function: `?run_all` for example. This requires installing the package first. 
 
 ## System Requirements
 
