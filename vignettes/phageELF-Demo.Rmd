@@ -1,0 +1,90 @@
+---
+title: "phageELF-Demo"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{phageELF-Demo}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(phageELF)
+```
+
+First, download and load the 'PhageELF' package! 
+Download the example data and set your directory in that folder with setwd(). For example, setwd("~/Downloads/app_data"). The following analysis should not take more than a few seconds. 
+
+## 1. Loading files
+
+```{r}
+# Load data
+DLS_data <- read.csv('DLS_data.csv')
+lytic_data <- read.csv('lytic_data.csv')
+training_pairs <- read.csv('training_pairs.csv')
+testing_pairs <- read.csv('testing_pairs.csv')
+size <- read.csv('size.csv')
+
+# Pick a metric between 'Intensity', 'Volume' and 'Number'.
+metric <- 'Intensity'
+```
+
+## 2. Run analysis on all control-treatment pairs
+
+```{r}
+
+results <- run_all(DLS_data, lytic_data, training_pairs, testing_pairs, metric)
+
+```
+
+
+```{r}
+# Look at training data summary
+results$data
+
+# Plot model with training data only 
+plot_model(results$model)
+
+# Plot model with both training data and predictions
+plot_test_data(results$model, results$predictions)
+
+# Look at model predictions for titer loss
+results$predictions
+
+```
+
+## 3. Run analysis separately for each control and plot DLS curves
+
+```{r}
+training_pairs_LPS4 <- training_pairs[training_pairs$control == 'LPS 4 SM ave',]
+
+# Plot DLS distributions
+plot_DLS(DLS_data, training_pairs_LPS4$treatment , 'LPS 4 SM ave','Intensity', size$size)
+
+# Calculate AUC difference for training data 
+diff <- AUC_diff(DLS_data, training_pairs_LPS4$treatment , 'LPS 4 SM ave','Intensity')
+
+# Train model
+lm_DLS <- lm_train(diff, lytic_data, intercept = TRUE) 
+
+# Plot model with training data
+plot_model(lm_DLS)
+
+# Calculate AUC difference for test data
+test_diff <- AUC_diff(DLS_data, testing_pairs$treatment , 'LPS 4 Tris + gel ave','Intensity')
+
+# Make predictions with model and AUC difference
+pred <- lm_test(lm_DLS, test_diff)
+
+# Plot model with training and test data
+plot_test_data(lm_DLS, test_diff)
+
+```
+
+
