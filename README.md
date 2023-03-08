@@ -14,6 +14,12 @@ This package contains 7 functions:
 
 You can get more information about each function with the help function: `?run_all` . This requires installing the package first. 
 
+## System Requirements
+
+The 'phageELF' package requires only a standard computer and should be compatible with Windows, Mac and Linux operating systems.
+
+Users should have 'R' version 4.2.2 installed. 
+
 ## Installation
 
 If you have not used R before, you can install R [here](https://www.r-project.org/) and RStudio [here](https://www.rstudio.com/products/rstudio/). 
@@ -25,3 +31,4 @@ install.packages("devtools")
 devtools::install_github("jpourtois/phageELF")
 library("phageELF")
 ```
+Package installation should only take a few seconds. 
