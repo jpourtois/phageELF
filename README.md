@@ -18,18 +18,20 @@ You can get more information about each function with the help function: `?run_a
 
 The `phageELF` package requires only a standard computer and should be compatible with Windows, Mac and Linux operating systems.
 
-Users should have `R` version 4.2.2 installed. The package functions with all packages in their latest version as they appear on `CRAN` on March 2023.
+Users should have `R` version 4.2.2 installed. The package functions with all packages in their latest version as they appear on `CRAN` on March 2023. 
 
 ```
-
+tibble_3.0.3
+tidyr_1.1.0
+ggplot2_3.3.2
 
 ```
 
 ## Installation
 
-If you have not used R before, you can install R [here](https://www.r-project.org/) and RStudio [here](https://www.rstudio.com/products/rstudio/). 
+If you have not used `R` before, you can install R [here](https://www.r-project.org/) and RStudio [here](https://www.rstudio.com/products/rstudio/). 
 
-Run the following code in your R console in order to install and load this package:
+Run the following code in your `R` console in order to install and load this package:
 
 ``` r
 install.packages("devtools")
