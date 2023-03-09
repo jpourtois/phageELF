@@ -44,5 +44,7 @@ Package installation should only take a few seconds.
 A demo of all the functions in the `phageELF` package is available in the demo vignette:
 
 ```
-vignette("phageELF-Demo",'phageELF')
+vignette('phageELF-Demo','phageELF')
 ```
+
+The user must install the package with `build_vignettes = TRUE` to access the vignette. 
