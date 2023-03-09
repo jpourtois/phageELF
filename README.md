@@ -34,7 +34,15 @@ Run the following code in your `R` console in order to install and load this pac
 
 ``` r
 install.packages("devtools")
-devtools::install_github("jpourtois/phageELF")
+devtools::install_github("jpourtois/phageELF", build_vignettes = TRUE)
 library("phageELF")
 ```
 Package installation should only take a few seconds. 
+
+## Demo
+
+A demo of all the functions in the `phageELF` package is available in the demo vignette:
+
+```
+vignette("phageELF-Demo",'phageELF')
+```
